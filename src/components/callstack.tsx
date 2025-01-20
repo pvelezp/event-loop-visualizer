@@ -149,7 +149,7 @@ const JsRuntimeVisualizer = () => {
       } else {
         setIsPlaying(false);
       }
-    }, 2000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [step, isPlaying]);
@@ -172,7 +172,7 @@ const JsRuntimeVisualizer = () => {
                   contextColors[item as keyof ContextColors] ||
                   "bg-gray-700 border-gray-400"
                 }
-                border-2 rounded p-3 text-sm font-mono text-white
+                border-2 rounded p-3 text-xs  font-mono text-white
                 shadow-lg relative
                 ${index > 0 ? "-mt-1" : ""}`}
               style={{
@@ -198,7 +198,7 @@ const JsRuntimeVisualizer = () => {
     isActive: boolean
   ): ReactNode => (
     <div className="mb-4 w-full">
-      <h3 className="text-gray-300 font-semibold mb-2">{title}</h3>
+      <h3 className="text-gray-300 font-semibold mb-2 text-sm">{title}</h3>
       <div
         className={`${bgColor} p-4 rounded-lg h-32 transition-all duration-500 border 
         ${
@@ -225,10 +225,10 @@ const JsRuntimeVisualizer = () => {
   );
 
   return (
-    <div className="p-6 bg-gray-900 text-gray-100 h-screen">
+    <div className="p-4 sm:p-6 bg-gray-900 text-gray-100 h-screen">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+          <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
             JavaScript Runtime Visualizer
           </h1>
           <div className="flex gap-4">
@@ -251,17 +251,17 @@ const JsRuntimeVisualizer = () => {
           </div>
         </div>
 
-        <div className="mb-8">
+        <div className="mb-4">
           <CodeDisplay code={defaultCode} />
         </div>
 
-        <div className="text-center mb-6 p-2 bg-gray-800 rounded-md border border-gray-700">
-          <p className="text-lg text-indigo-300 font-medium">
+        <div className="text-center mb-6 p-2 bg-gray-800 ">
+          <p className="text-md sm:text-lg text-indigo-300 font-medium">
             {stepDescriptions[step] || "Visualization complete"}
           </p>
         </div>
 
-        <div className="grid grid-cols-7 gap-6">
+        <div className="grid grid-cols-7 gap-0">
           <div className="col-span-3">
             <div className="text-gray-300 font-semibold mb-2">Call Stack</div>
             {renderCallStack(callStack.slice().reverse())}
@@ -284,7 +284,7 @@ const JsRuntimeVisualizer = () => {
           </div>
 
           <div className="flex items-center justify-center">
-            <div className="flex flex-col items-center space-y-2">
+            <div className="flex flex-col items-center">
               <Eye
                 className={`w-8 h-8 text-indigo-400 transition-all duration-500 ${
                   lookingAt === "stack"
@@ -299,12 +299,12 @@ const JsRuntimeVisualizer = () => {
           </div>
 
           <div className="col-span-3">
-            <h2 className="text-xl font-bold mb-6 bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+            <h2 className="text-md font-bold mb-2 bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
               Browser APIs
             </h2>
-            <div className="bg-gray-800 flex flex-col gap-5 p-4 rounded-lg border border-gray-700">
+            <div className="bg-gray-800 flex flex-col  p-4 rounded-lg border border-gray-700">
               {renderQueue(
-                "Microtask Queue (Higher Priority)",
+                "Microtask Queue (↑ Priority)",
                 microtaskQueue,
                 "bg-gray-800",
                 lookingAt === "microtask"
