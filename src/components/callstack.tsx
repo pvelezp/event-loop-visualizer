@@ -1,6 +1,16 @@
 import { Eye, PauseCircle, PlayCircle, RotateCw } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import CodeDisplay from "./code-snippet";
+
+type LookingAt = "stack" | "microtask" | "callback";
+
+interface ContextColors {
+  "Global Execution Context": string;
+  'console.log("Start")': string;
+  'console.log("End")': string;
+  "Promise callback": string;
+  "setTimeout callback": string;
+}
 
 const defaultCode = `console.log("Start");
 setTimeout(() => {
@@ -25,9 +35,9 @@ const stepDescriptions = [
   "setTimeout callback is pushed to Call Stack from Callback Queue",
   "setTimeout callback is popped off the Call Stack after execution",
   "Global Execution Context is popped off the Call Stack - program complete",
-];
+] as const;
 
-const contextColors = {
+const contextColors: ContextColors = {
   "Global Execution Context": "bg-indigo-900 border-indigo-500",
   'console.log("Start")': "bg-green-900 border-green-500",
   'console.log("End")': "bg-green-900 border-green-500",
@@ -36,15 +46,15 @@ const contextColors = {
 };
 
 const JsRuntimeVisualizer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [step, setStep] = useState(0);
-  const [callStack, setCallStack] = useState([]);
-  const [microtaskQueue, setMicrotaskQueue] = useState([]);
-  const [callbackQueue, setCallbackQueue] = useState([]);
-  const [consoleOutput, setConsoleOutput] = useState([]);
-  const [lookingAt, setLookingAt] = useState("stack");
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [step, setStep] = useState<number>(0);
+  const [callStack, setCallStack] = useState<string[]>([]);
+  const [microtaskQueue, setMicrotaskQueue] = useState<string[]>([]);
+  const [callbackQueue, setCallbackQueue] = useState<string[]>([]);
+  const [consoleOutput, setConsoleOutput] = useState<string[]>([]);
+  const [lookingAt, setLookingAt] = useState<LookingAt>("stack");
 
-  const resetState = () => {
+  const resetState = (): void => {
     setStep(0);
     setCallStack([]);
     setMicrotaskQueue([]);
@@ -57,7 +67,7 @@ const JsRuntimeVisualizer = () => {
   useEffect(() => {
     if (!isPlaying) return;
 
-    const steps = [
+    const steps: (() => void)[] = [
       // Step 0: Initial state
       () => {
         setCallStack(["Global Execution Context"]);
@@ -144,7 +154,7 @@ const JsRuntimeVisualizer = () => {
     return () => clearTimeout(timer);
   }, [step, isPlaying]);
 
-  const renderCallStack = (items) => (
+  const renderCallStack = (items: string[]): ReactNode => (
     <div className="relative h-96 w-full">
       <div className="absolute inset-0 border-2 border-gray-600 rounded-lg bg-gray-800/50 backdrop-blur">
         {items.length === 0 && (
@@ -158,7 +168,10 @@ const JsRuntimeVisualizer = () => {
             <div
               key={index}
               className={`transform transition-all duration-500 ease-out
-                ${contextColors[item] || "bg-gray-700 border-gray-400"}
+                ${
+                  contextColors[item as keyof ContextColors] ||
+                  "bg-gray-700 border-gray-400"
+                }
                 border-2 rounded p-3 text-sm font-mono text-white
                 shadow-lg relative
                 ${index > 0 ? "-mt-1" : ""}`}
@@ -178,11 +191,16 @@ const JsRuntimeVisualizer = () => {
     </div>
   );
 
-  const renderQueue = (title, items, bgColor, isActive) => (
+  const renderQueue = (
+    title: string,
+    items: string[],
+    bgColor: string,
+    isActive: boolean
+  ): ReactNode => (
     <div className="mb-4 w-full">
       <h3 className="text-gray-300 font-semibold mb-2">{title}</h3>
       <div
-        className={`${bgColor} p-4 rounded-lg h-32  transition-all duration-500 border 
+        className={`${bgColor} p-4 rounded-lg h-32 transition-all duration-500 border 
         ${
           isActive
             ? "border-indigo-500 shadow-lg shadow-indigo-500/20"
@@ -190,7 +208,7 @@ const JsRuntimeVisualizer = () => {
         }`}
       >
         {items.length === 0 && (
-          <div className="text-gray-500 text-center  h-24 grid place-items-center">
+          <div className="text-gray-500 text-center h-24 grid place-items-center">
             Queue Empty
           </div>
         )}
