@@ -86,18 +86,12 @@ const JsRuntimeVisualizer = () => {
       },
       // Step 3: setTimeout callback added to callback queue
       () => {
-        setCallbackQueue((prev) => [
-          ...prev,
-          'setTimeout(() => console.log("Timeout"))',
-        ]);
+        setCallbackQueue((prev) => [...prev, '() => console.log("Timeout")']);
         setLookingAt("callback");
       },
       // Step 4: Promise callback added to microtask queue
       () => {
-        setMicrotaskQueue((prev) => [
-          ...prev,
-          'Promise.then(() => console.log("Promise"))',
-        ]);
+        setMicrotaskQueue((prev) => [...prev, '() => console.log("Promise")']);
         setLookingAt("microtask");
       },
       // Step 5: console.log("End")
@@ -255,7 +249,7 @@ const JsRuntimeVisualizer = () => {
           <CodeDisplay code={defaultCode} />
         </div>
 
-        <div className="text-center mb-6 p-2 bg-gray-800 ">
+        <div className="text-center mb-6 p-2 bg-gray-800">
           <p className="text-md sm:text-lg text-indigo-300 font-medium">
             {stepDescriptions[step] || "Visualization complete"}
           </p>
@@ -285,6 +279,7 @@ const JsRuntimeVisualizer = () => {
 
           <div className="flex items-center justify-center">
             <div className="flex flex-col items-center">
+              <span className="text-sm text-gray-400 mb-4">Event Loop</span>
               <Eye
                 className={`w-8 h-8 text-indigo-400 transition-all duration-500 ${
                   lookingAt === "stack"
@@ -294,7 +289,6 @@ const JsRuntimeVisualizer = () => {
                     : "transform translate-x-4 translate-y-4"
                 }`}
               />
-              <span className="text-sm text-gray-400">Event Loop</span>
             </div>
           </div>
 
