@@ -155,7 +155,7 @@ const JsRuntimeVisualizer = () => {
   }, [step, isPlaying]);
 
   const renderCallStack = (items: string[]): ReactNode => (
-    <div className="relative h-96 w-full">
+    <div className="relative h-48 w-full">
       <div className="absolute inset-0 border-2 border-gray-600 rounded-lg bg-gray-800/50 backdrop-blur">
         {items.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center text-gray-500">
@@ -270,7 +270,7 @@ const JsRuntimeVisualizer = () => {
               <h3 className="text-gray-300 font-semibold mb-2">
                 Console Output
               </h3>
-              <div className="bg-gray-800 text-green-400 p-4 rounded-lg font-mono min-h-48 border border-gray-700">
+              <div className="bg-zinc-900 text-green-400 p-4 rounded-lg font-mono min-h-48 border border-gray-700">
                 {consoleOutput.length === 0 && (
                   <div className="text-gray-500">No output yet</div>
                 )}
@@ -299,10 +299,10 @@ const JsRuntimeVisualizer = () => {
           </div>
 
           <div className="col-span-3">
+            <h2 className="text-xl font-bold mb-6 bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
+              Browser APIs
+            </h2>
             <div className="bg-gray-800 flex flex-col gap-5 p-4 rounded-lg border border-gray-700">
-              <h2 className="text-xl font-bold mb-6 bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">
-                Browser APIs
-              </h2>
               {renderQueue(
                 "Microtask Queue (Higher Priority)",
                 microtaskQueue,
