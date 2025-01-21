@@ -30,11 +30,11 @@ const stepDescriptions = [
   "Promise is processed and its callback is queued in Microtask Queue",
   "console.log('End') is pushed to the Call Stack",
   "console.log('End') is popped off the Call Stack after execution",
+  "Global Execution Context is popped off the Call Stack",
   "Promise callback is pushed to Call Stack from Microtask Queue",
   "Promise callback is popped off the Call Stack after execution",
   "setTimeout callback is pushed to Call Stack from Callback Queue",
-  "setTimeout callback is popped off the Call Stack after execution",
-  "Global Execution Context is popped off the Call Stack - program complete",
+  "setTimeout callback is popped off the Call Stack after execution - program complete",
 ] as const;
 
 const contextColors: ContextColors = {
@@ -103,30 +103,33 @@ const JsRuntimeVisualizer = () => {
       // Step 6: Pop console.log("End")
       () => {
         setCallStack(["Global Execution Context"]);
-        setLookingAt("microtask");
       },
       // Step 7: Execute Promise (microtask)
       () => {
-        setCallStack(["Promise callback", "Global Execution Context"]);
+        setCallStack([]);
+      },
+      // Step 7: Execute Promise (microtask)
+      () => {
+        setCallStack(["Promise callback"]);
         setMicrotaskQueue([]);
         setConsoleOutput((prev) => [...prev, "Promise"]);
-        setLookingAt("stack");
+        setLookingAt("microtask");
       },
       // Step 8: Pop Promise callback
       () => {
-        setCallStack(["Global Execution Context"]);
-        setLookingAt("callback");
+        setCallStack([]);
+        setLookingAt("stack");
       },
       // Step 9: Execute setTimeout callback
       () => {
-        setCallStack(["setTimeout callback", "Global Execution Context"]);
+        setCallStack(["setTimeout callback"]);
         setCallbackQueue([]);
         setConsoleOutput((prev) => [...prev, "Timeout"]);
         setLookingAt("stack");
       },
       // Step 10: Pop setTimeout callback
       () => {
-        setCallStack(["Global Execution Context"]);
+        setCallStack([]);
         setLookingAt("stack");
       },
       // Step 11: Pop Global Execution Context
@@ -143,7 +146,7 @@ const JsRuntimeVisualizer = () => {
       } else {
         setIsPlaying(false);
       }
-    }, 3000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [step, isPlaying]);
@@ -166,7 +169,7 @@ const JsRuntimeVisualizer = () => {
                   contextColors[item as keyof ContextColors] ||
                   "bg-gray-700 border-gray-400"
                 }
-                border-2 rounded p-3 text-xs  font-mono text-white
+                border-2 rounded p-3 text-xxs sm:text-xs  font-mono text-white
                 shadow-lg relative
                 ${index > 0 ? "-mt-1" : ""}`}
               style={{
@@ -194,7 +197,7 @@ const JsRuntimeVisualizer = () => {
     <div className="mb-4 w-full">
       <h3 className="text-gray-300 font-semibold mb-2 text-sm">{title}</h3>
       <div
-        className={`${bgColor} p-4 rounded-lg h-32 transition-all duration-500 border 
+        className={`${bgColor} p-2 rounded-lg h-32 transition-all duration-500 border 
         ${
           isActive
             ? "border-indigo-500 shadow-lg shadow-indigo-500/20"
@@ -209,7 +212,7 @@ const JsRuntimeVisualizer = () => {
         {items.map((item, index) => (
           <div
             key={index}
-            className="bg-orange-800 p-2 mb-2 rounded shadow-lg animate-fade-in text-gray-300"
+            className="bg-orange-800 text-xxs sm:text-xs p-1 rounded shadow-lg animate-fade-in text-gray-300"
           >
             {item}
           </div>
