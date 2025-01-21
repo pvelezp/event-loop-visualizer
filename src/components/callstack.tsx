@@ -34,7 +34,7 @@ const stepDescriptions = [
   "Promise callback is pushed to Call Stack from Microtask Queue",
   "Promise callback is popped off the Call Stack after execution",
   "setTimeout callback is pushed to Call Stack from Callback Queue",
-  "setTimeout callback is popped off the Call Stack after execution - program complete",
+  "setTimeout callback is popped off the Call Stack after execution",
 ] as const;
 
 const contextColors: ContextColors = {
@@ -107,18 +107,19 @@ const JsRuntimeVisualizer = () => {
       // Step 7: Execute Promise (microtask)
       () => {
         setCallStack([]);
+        setLookingAt("microtask");
       },
       // Step 7: Execute Promise (microtask)
       () => {
         setCallStack(["Promise callback"]);
         setMicrotaskQueue([]);
         setConsoleOutput((prev) => [...prev, "Promise"]);
-        setLookingAt("microtask");
+        setLookingAt("stack");
       },
       // Step 8: Pop Promise callback
       () => {
         setCallStack([]);
-        setLookingAt("stack");
+        setLookingAt("callback");
       },
       // Step 9: Execute setTimeout callback
       () => {
@@ -146,7 +147,7 @@ const JsRuntimeVisualizer = () => {
       } else {
         setIsPlaying(false);
       }
-    }, 1000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [step, isPlaying]);
@@ -253,7 +254,7 @@ const JsRuntimeVisualizer = () => {
         </div>
 
         <div className="text-center mb-6 p-2 bg-gray-800">
-          <p className="text-md sm:text-lg text-indigo-300 font-medium">
+          <p className="text-md text-xxs sm:text-lg text-indigo-300 font-medium">
             {stepDescriptions[step] || "Visualization complete"}
           </p>
         </div>
