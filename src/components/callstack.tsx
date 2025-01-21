@@ -12,7 +12,7 @@ interface ContextColors {
   "setTimeout callback": string;
 }
 
-const speed = 500;
+const speed = 2500;
 
 const defaultCode = `console.log("Start");
 setTimeout(() => {
@@ -291,8 +291,8 @@ const JsRuntimeVisualizer = () => {
                   lookingAt === "stack"
                     ? "transform "
                     : lookingAt === "microtask"
-                    ? "transform translate-x-4 -translate-y-4"
-                    : "transform translate-x-4 translate-y-8"
+                    ? "transform translate-x-2 -translate-y-2"
+                    : "transform translate-x-2 translate-y-4"
                 }`}
               />
             </div>
@@ -319,6 +319,26 @@ const JsRuntimeVisualizer = () => {
           </div>
         </div>
       </div>
+      <footer className="bg-transparent absolute bottom-0 right-4 text-center py-4">
+        <div className="flex justify-center items-center space-x-2">
+          <a
+            href="https://www.linkedin.com/in/pablovelezcoder/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:text-blue-700"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+            >
+              <path d="M20.452 20.452h-3.999v-5.985c0-1.428-.027-3.267-1.99-3.267-1.991 0-2.297 1.558-2.297 3.162v6.09H8.16V9h3.845v1.561h.054c.535-1.011 1.837-2.077 3.778-2.077 4.037 0 4.785 2.657 4.785 6.111v5.857zM5.337 7.433c-1.281 0-2.317-1.038-2.317-2.317 0-1.28 1.036-2.318 2.317-2.318s2.318 1.038 2.318 2.318c0 1.279-1.037 2.317-2.318 2.317zm2.002 13.019H3.334V9h4.005v11.452zm15.331-19.895H1.331C.594.557 0 1.15 0 1.886v20.229c0 .736.594 1.33 1.331 1.33h20.34c.735 0 1.329-.594 1.329-1.33V1.886c0-.736-.594-1.329-1.329-1.329z" />
+            </svg>
+          </a>
+          <span className="text-gray-700 text-xs">By Pablo Vélez</span>
+        </div>
+      </footer>
     </div>
   );
 };
