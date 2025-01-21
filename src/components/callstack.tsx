@@ -1,5 +1,5 @@
-import { Eye, PauseCircle, PlayCircle, RotateCw } from "lucide-react";
-import { useEffect, useState, ReactNode } from "react";
+import { Eye, Pause, Play, RotateCw } from "lucide-react";
+import { ReactNode, useEffect, useState } from "react";
 import CodeDisplay from "./code-snippet";
 
 type LookingAt = "stack" | "microtask" | "callback";
@@ -11,6 +11,8 @@ interface ContextColors {
   "Promise callback": string;
   "setTimeout callback": string;
 }
+
+const speed = 500;
 
 const defaultCode = `console.log("Start");
 setTimeout(() => {
@@ -147,7 +149,7 @@ const JsRuntimeVisualizer = () => {
       } else {
         setIsPlaying(false);
       }
-    }, 3000);
+    }, speed);
 
     return () => clearTimeout(timer);
   }, [step, isPlaying]);
@@ -235,9 +237,9 @@ const JsRuntimeVisualizer = () => {
               className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
             >
               {isPlaying ? (
-                <PauseCircle className="w-5 h-5" />
+                <Pause className="w-5 h-5" />
               ) : (
-                <PlayCircle className="w-5 h-5" />
+                <Play className="w-5 h-5" />
               )}
             </button>
             <button
@@ -287,10 +289,10 @@ const JsRuntimeVisualizer = () => {
               <Eye
                 className={`w-8 h-8 text-indigo-400 transition-all duration-500 ${
                   lookingAt === "stack"
-                    ? "transform -translate-y-4"
+                    ? "transform "
                     : lookingAt === "microtask"
-                    ? "transform translate-x-4"
-                    : "transform translate-x-4 translate-y-4"
+                    ? "transform translate-x-4 -translate-y-4"
+                    : "transform translate-x-4 translate-y-8"
                 }`}
               />
             </div>
